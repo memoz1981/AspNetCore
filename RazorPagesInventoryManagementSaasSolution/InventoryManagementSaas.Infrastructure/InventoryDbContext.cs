@@ -1,6 +1,7 @@
 namespace InventoryManagementSaas.Infrastructure;
 
 using Microsoft.EntityFrameworkCore;
+using InventoryManagementSaas.Infrastructure.Entities;
 
 public class InventoryDbContext : DbContext
 {

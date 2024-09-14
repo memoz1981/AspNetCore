@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InventoryManagementSaas.Infrastructure\InventoryManagementSaas.Infrastructure.csproj" />
+    <ProjectReference Include="..\InventoryManagementSaas.Service\InventoryManagementSaas.Service.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -9,6 +10,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.5" />
   </ItemGroup>
 
   <PropertyGroup>
