@@ -12,9 +12,9 @@ namespace InventoryManagementSaas.RazorPages.Pages_Category
 {
     public class IndexModel : PageModel
     {
-        private readonly InventoryManagementSaas.Infrastructure.InventoryDbContext _context;
+        private readonly InventoryDbContext _context;
 
-        public IndexModel(InventoryManagementSaas.Infrastructure.InventoryDbContext context)
+        public IndexModel(InventoryDbContext context)
         {
             _context = context;
         }

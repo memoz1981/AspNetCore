@@ -8,9 +8,9 @@ public class InventoryDbContext : DbContext
     public InventoryDbContext(DbContextOptions<InventoryDbContext> options) : base(options)
     {}
 
-    public DbSet<Inventory> Inventories { get; }
-    public DbSet<Category> Categories { get; }
-    public DbSet<Company> Companies { get; }
-    public DbSet<Supplier> Suppliers { get; }
+    public DbSet<Inventory> Inventories { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<Company> Companies { get; set; }
+    public DbSet<Supplier> Suppliers { get; set; }
     public DbSet<Tenant> Tenants { get; set; }
 }
