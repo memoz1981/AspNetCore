@@ -1,4 +1,4 @@
-namespace InventoryManagementSaas.Infrastructure.Entities;;
+namespace InventoryManagementSaas.Infrastructure.Entities;
 
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
