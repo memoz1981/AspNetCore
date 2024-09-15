@@ -1,22 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using InventoryManagementSaas.Infrastructure;
-using InventoryManagementSaas.Infrastructure.Entities;
+using InventoryManagementSaas.Service.Service.Categories;
+using InventoryManagementSaas.Service.Dto;
 
 namespace InventoryManagementSaas.RazorPages.Pages_Category
 {
     public class CreateModel : PageModel
     {
-        private readonly InventoryManagementSaas.Infrastructure.InventoryDbContext _context;
+        private readonly ICategoryService _service; 
 
-        public CreateModel(InventoryManagementSaas.Infrastructure.InventoryDbContext context)
+        public CreateModel(ICategoryService service)
         {
-            _context = context;
+            _service = service;
         }
 
         public IActionResult OnGet()
@@ -25,9 +20,8 @@ namespace InventoryManagementSaas.RazorPages.Pages_Category
         }
 
         [BindProperty]
-        public Category Category { get; set; } = default!;
+        public CategoryNewDto Category { get; set; } = default;
 
-        // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -35,8 +29,14 @@ namespace InventoryManagementSaas.RazorPages.Pages_Category
                 return Page();
             }
 
-            _context.Categories.Add(Category);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _service.Add(Category);      
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message); 
+            }
 
             return RedirectToPage("./Index");
         }

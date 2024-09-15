@@ -1,27 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using InventoryManagementSaas.Infrastructure;
-using InventoryManagementSaas.Infrastructure.Entities;
+using InventoryManagementSaas.Service.Service.Categories;
+using InventoryManagementSaas.Service.Dto;
 
 namespace InventoryManagementSaas.RazorPages.Pages_Category
 {
     public class EditModel : PageModel
     {
-        private readonly InventoryManagementSaas.Infrastructure.InventoryDbContext _context;
+        private readonly ICategoryService _service;
 
-        public EditModel(InventoryManagementSaas.Infrastructure.InventoryDbContext context)
+        public EditModel(ICategoryService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [BindProperty]
-        public Category Category { get; set; } = default!;
+        public CategoryExistingDto Category { get; set; } = default;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,7 +24,7 @@ namespace InventoryManagementSaas.RazorPages.Pages_Category
                 return NotFound();
             }
 
-            var category =  await _context.Categories.FirstOrDefaultAsync(m => m.CategoryId == id);
+            var category =  await _service.GetById(id.Value);
             if (category == null)
             {
                 return NotFound();
@@ -39,8 +33,6 @@ namespace InventoryManagementSaas.RazorPages.Pages_Category
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -48,30 +40,16 @@ namespace InventoryManagementSaas.RazorPages.Pages_Category
                 return Page();
             }
 
-            _context.Attach(Category).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.Update(Category); 
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex)
             {
-                if (!CategoryExists(Category.CategoryId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(ex.Message); 
             }
 
             return RedirectToPage("./Index");
-        }
-
-        private bool CategoryExists(int id)
-        {
-            return _context.Categories.Any(e => e.CategoryId == id);
         }
     }
 }

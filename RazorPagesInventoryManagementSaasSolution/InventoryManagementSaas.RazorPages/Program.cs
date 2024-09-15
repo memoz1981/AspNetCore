@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using InventoryManagementSaas.Infrastructure;
+using InventoryManagementSaas.Service.Service.Categories;
+using InventoryManagementSaas.Service.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<InventoryDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("Inventory")));
+
+builder.Services.AddAutoMapper(m => m.AddProfile<InventoryMappings>()); 
+//Services
+builder.Services.AddScoped<ICategoryService, CategoryService>(); 
+
 
 var app = builder.Build();
 

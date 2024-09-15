@@ -1,29 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using InventoryManagementSaas.Infrastructure;
-using InventoryManagementSaas.Infrastructure.Entities;
+using InventoryManagementSaas.Service.Service.Categories;
+using InventoryManagementSaas.Service.Dto;
 
 namespace InventoryManagementSaas.RazorPages.Pages_Category
 {
     public class IndexModel : PageModel
     {
-        private readonly InventoryDbContext _context;
+        private readonly ICategoryService _service;
 
-        public IndexModel(InventoryDbContext context)
+        public IndexModel(ICategoryService service)
         {
-            _context = context;
+            _service = service; 
         }
 
-        public IList<Category> Category { get;set; } = default!;
+        public IList<CategoryExistingDto> Categories { get;set; } = new List<CategoryExistingDto>();
 
         public async Task OnGetAsync()
         {
-            Category = await _context.Categories.ToListAsync();
+            await foreach(var item in _service.GetAll())
+                Categories.Add(item); 
         }
     }
 }
